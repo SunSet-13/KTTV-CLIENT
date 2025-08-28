@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Features from './components/Features';
-import Footer from './components/Footer';
-import RainfallControls from './components/RainfallControls';
-import Map from './components/Map';
-import Legend from './components/Legend';
-import Charts from './components/Charts';
-import DataQualityAlert from './components/DataQualityAlert';
-import MapPage from './components/MapPage';
-import DataTable from './components/DataTable';
-import ChartsPage from './components/ChartsPage';
+
+// Import from new feature-based structure
+import { Header, Footer } from './layouts';
+import { Hero, Features } from './shared/components';
+import { Map, Legend, RainfallControls, MapPage, MapPageKTTV } from './features/map';
+import { Charts, ChartsPage } from './features/charts';
+import { DataTable, DataQualityAlert } from './features/data-table';
+import ErrorBoundary from './ErrorBoundary';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -19,7 +15,6 @@ function App() {
   const [rainfallData, setRainfallData] = useState([]);
   const [qualityReport, setQualityReport] = useState(null);
   const [viewMode, setViewMode] = useState('points');
-  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     loadStations();
@@ -27,12 +22,32 @@ function App() {
 
   const loadStations = async () => {
     try {
-      const response = await fetch('/api/rainfall/stations');
+      // Sử dụng API đã hoạt động thay vì API không tồn tại
+      const response = await fetch('http://localhost:2004/api/station-rain');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setStations(data);
+      
+      // Xử lý dữ liệu từ API thực tế
+      if (data?.stationRainData?.length > 0) {
+        const stationsMap = new Map();
+        data.stationRainData.forEach(item => {
+          const stationId = item.StationID;
+          if (!stationsMap.has(stationId)) {
+            stationsMap.set(stationId, {
+              id: item.StationID,
+              name: item.StationName || 'Unknown',
+              code: item.StationNo || 'N/A',
+              latitude: parseFloat(item.Latitude),
+              longitude: parseFloat(item.Longitude)
+            });
+          }
+        });
+        setStations(Array.from(stationsMap.values()));
+      } else {
+        throw new Error('Không có dữ liệu trạm');
+      }
     } catch (error) {
       console.error('Lỗi khi tải danh sách trạm:', error);
       // Dữ liệu mẫu khi không có API
@@ -58,8 +73,18 @@ function App() {
       }
       const result = await response.json();
       
-      setRainfallData(result.data);
-      setQualityReport(result.qualityReport);
+      // Kiểm tra an toàn trước khi set data
+      if (result && result.data) {
+        setRainfallData(result.data);
+      } else {
+        // Nếu không có dữ liệu, set array rỗng
+        setRainfallData([]);
+        console.warn('API không trả về dữ liệu hợp lệ:', result);
+      }
+      
+      if (result && result.qualityReport) {
+        setQualityReport(result.qualityReport);
+      }
     } catch (error) {
       console.error('Lỗi khi tải dữ liệu:', error);
       // Tạo dữ liệu mẫu từ stations hiện có
@@ -107,12 +132,16 @@ function App() {
     setViewMode(mode);
   };
 
-  const handleAnimationToggle = (animating) => {
-    setIsAnimating(animating);
+  const handleAnimationToggle = () => {
+    // Animation feature removed for simplicity
   };
 
   const navigateToMap = () => {
     setCurrentPage('map');
+  };
+
+  const navigateToKTTVMap = () => {
+    setCurrentPage('kttvMap');
   };
 
   const navigateToDataTable = () => {
@@ -129,7 +158,20 @@ function App() {
 
   // Render trang bản đồ nếu currentPage là 'map'
   if (currentPage === 'map') {
-    return <MapPage onGoBack={navigateToHome} />;
+    return (
+      <ErrorBoundary>
+        <MapPage onGoBack={navigateToHome} />
+      </ErrorBoundary>
+    );
+  }
+
+  // Render trang bản đồ KTTV
+  if (currentPage === 'kttvMap') {
+    return (
+      <ErrorBoundary>
+        <MapPageKTTV onGoBack={navigateToHome} />
+      </ErrorBoundary>
+    );
   }
 
   // Render trang truy xuất dữ liệu
@@ -146,8 +188,10 @@ function App() {
     <div className="App">
       <Header 
         onMapClick={navigateToMap}
+        onKTTVMapClick={navigateToKTTVMap}
         onDataTableClick={navigateToDataTable}
         onChartsClick={navigateToCharts}
+        onHomeClick={navigateToHome}
       />
       <Hero />
       <Features />
@@ -166,8 +210,6 @@ function App() {
         <Map 
           data={rainfallData} 
           viewMode={viewMode}
-          animationData={[]}
-          isAnimating={isAnimating}
         />
         
         <Legend />

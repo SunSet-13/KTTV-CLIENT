@@ -1,0 +1,211 @@
+/* ProvinceStats Styles */
+.province-stats {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+}
+
+.stats-header {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  padding: 16px 20px;
+}
+
+.stats-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stats-content {
+  padding: 20px;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #6c757d;
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Stat Item Variants */
+.stat-item.primary {
+  border-left-color: #007bff;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+}
+
+.stat-item.success {
+  border-left-color: #28a745;
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+}
+
+.stat-item.info {
+  border-left-color: #17a2b8;
+  background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+}
+
+.stat-item.warning {
+  border-left-color: #ffc107;
+  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+}
+
+.stat-item.secondary {
+  border-left-color: #6c757d;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.stat-icon {
+  font-size: 24px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.stat-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #6c757d;
+  font-weight: 500;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #212529;
+}
+
+/* Rain Progress */
+.rain-progress {
+  margin-top: 16px;
+}
+
+.progress-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+  border-radius: 4px;
+  transition: width 0.8s ease-in-out;
+}
+
+/* Loading State */
+.province-stats.loading .stats-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 120px;
+}
+
+.loading-spinner {
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error State */
+.province-stats.error .stats-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+}
+
+.no-data {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .stat-item {
+    padding: 12px;
+  }
+  
+  .stat-icon {
+    font-size: 20px;
+    margin-right: 8px;
+  }
+  
+  .stat-value {
+    font-size: 16px;
+  }
+  
+  .stats-content {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-header {
+    padding: 12px 16px;
+  }
+  
+  .stats-title {
+    font-size: 14px;
+  }
+  
+  .stats-content {
+    padding: 12px;
+  }
+}

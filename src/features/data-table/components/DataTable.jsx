@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './DataTable.css';
-import Header from './Header';
+import { Header } from '../../../layouts';
 
 function DataTable({ onGoBack }) {
   const [data, setData] = useState([]);
