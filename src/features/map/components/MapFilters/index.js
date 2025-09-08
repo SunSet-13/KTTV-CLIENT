@@ -1,1 +1,1 @@
-export { default } from './MapFilters';
+export { default } from './MapFilters.jsx';

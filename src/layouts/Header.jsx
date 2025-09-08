@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-function Header({ onMapClick, onKTTVMapClick, onDataTableClick, onChartsClick, onHomeClick }) {
+function Header({ onKTTVMapClick, onDataTableClick, onChartsClick, onHomeClick }) {
   const [showDataDropdown, setShowDataDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -70,7 +70,6 @@ function Header({ onMapClick, onKTTVMapClick, onDataTableClick, onChartsClick, o
             </div>
           )}
         </div>
-        <a href="#" onClick={(e) => { e.preventDefault(); onMapClick && onMapClick(); }}>Bản đồ cũ</a>
         <a href="#" onClick={handleKTTVMapClick}>Bản đồ KTTV</a>
         <a href="#" onClick={(e) => e.preventDefault()}>Tìm kiếm</a>
         <a href="#" onClick={(e) => e.preventDefault()}>Hướng dẫn</a>

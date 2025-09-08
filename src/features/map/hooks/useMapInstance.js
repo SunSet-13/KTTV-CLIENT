@@ -1,7 +1,7 @@
 import { useRef, useCallback } from 'react';
 import L from 'leaflet';
-import { rainfallUtils } from '../../../shared/utils/rainfallUtils';
-import { formatUtils, dateUtils } from '../../../shared/utils';
+import { rainfallUtils } from '../../../shared/utils/rainfallUtils.js';
+import { formatUtils, dateUtils } from '../../../shared/utils/index.js';
 
 export const useMapInstance = () => {
   const mapRef = useRef(null);

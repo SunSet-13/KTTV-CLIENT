@@ -1,1 +1,1 @@
-export { default } from './ProvinceStats';
+export { default } from './ProvinceStats.jsx';

@@ -1,5 +1,10 @@
 import React from 'react';
-import { formatUtils } from '../../../shared/utils';
+// Import trực tiếp để tránh lỗi
+const formatUtils = {
+  formatNumber(num, decimals = 1) {
+    return parseFloat(num).toFixed(decimals);
+  }
+};
 import './ProvinceStats.css';
 
 const ProvinceStats = ({ 
